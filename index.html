@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wazhima - Minyak Aromaterapi Herbal</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons (Lucide) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom Config for Herbal Theme -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        herbal: {
+                            50: '#f4f4f4', // Lightest (From Palette)
+                            100: '#e0f9f9', // Very light teal tint
+                            200: '#b3eceb', // Light teal tint
+                            300: '#80dfdd',
+                            400: '#00b7b5', // Bright Tosca (From Palette - Accent)
+                            500: '#018790', // Medium Teal (From Palette - Primary Brand)
+                            600: '#017a82',
+                            700: '#00626e',
+                            800: '#005461', // Dark Teal (From Palette - Text/Dark BG)
+                            900: '#003b44', // Darker variation for deep contrast
+                        },
+                        stone: {
+                            50: '#f4f4f4', // Background base (From Palette)
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Lato', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Utilities */
+        .glass-nav {
+            background: rgba(244, 244, 244, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        /* Scroll Reveal Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.2, 1, 0.3, 1);
+            filter: blur(5px);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
+
+        /* Stagger Delays */
+        .delay-100 {
+            transition-delay: 100ms;
+        }
+
+        .delay-200 {
+            transition-delay: 200ms;
+        }
+
+        .delay-300 {
+            transition-delay: 300ms;
+        }
+
+        /* Toast Animation */
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        .toast-enter {
+            animation: slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .toast-exit {
+            animation: fadeOut 0.5s forwards;
+        }
+
+        /* Smooth Image Hover Zoom */
+        .img-zoom-container {
+            overflow: hidden;
+        }
+
+        .img-zoom-container img {
+            transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .img-zoom-container:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Modal Animation */
+        .modal-enter {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+        .modal-enter-active {
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+        }
+
+        .modal-exit {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .modal-exit-active {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.2s ease-in, transform 0.2s ease-in;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-stone-50 text-gray-700 font-sans antialiased selection:bg-herbal-200 selection:text-herbal-900 overflow-x-hidden">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300 transform translate-y-0" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer group" onclick="window.scrollTo(0,0)">
+                    <i data-lucide="leaf"
+                        class="h-8 w-8 text-herbal-500 transition-transform duration-500 group-hover:rotate-12"></i>
+                    <span class="font-serif text-2xl font-bold text-herbal-800 tracking-wide">Wazhima</span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-6 items-center">
+                    <a href="#beranda"
+                        class="text-gray-600 hover:text-herbal-600 transition-colors text-sm font-medium tracking-wide uppercase hover:underline underline-offset-4 decoration-2 decoration-herbal-300">Beranda</a>
+                    <a href="#manfaat"
+                        class="text-gray-600 hover:text-herbal-600 transition-colors text-sm font-medium tracking-wide uppercase hover:underline underline-offset-4 decoration-2 decoration-herbal-300">Manfaat</a>
+                    <a href="#produk"
+                        class="text-gray-600 hover:text-herbal-600 transition-colors text-sm font-medium tracking-wide uppercase hover:underline underline-offset-4 decoration-2 decoration-herbal-300">Produk</a>
+                    <a href="#reseller"
+                        class="text-gray-600 hover:text-herbal-600 transition-colors text-sm font-medium tracking-wide uppercase hover:underline underline-offset-4 decoration-2 decoration-herbal-300">Reseller</a>
+                    <a href="#lokasi"
+                        class="text-gray-600 hover:text-herbal-600 transition-colors text-sm font-medium tracking-wide uppercase hover:underline underline-offset-4 decoration-2 decoration-herbal-300">Lokasi</a>
+                    <a href="#galeri"
+                        class="text-gray-600 hover:text-herbal-600 transition-colors text-sm font-medium tracking-wide uppercase hover:underline underline-offset-4 decoration-2 decoration-herbal-300">Galeri</a>
+                    <a href="#testimoni"
+                        class="text-gray-600 hover:text-herbal-600 transition-colors text-sm font-medium tracking-wide uppercase hover:underline underline-offset-4 decoration-2 decoration-herbal-300">Ulasan</a>
+                </div>
+
+                <!-- Icons / CTA -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#kontak"
+                        class="bg-herbal-800 text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-herbal-700 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:scale-95">
+                        Kontak Kami
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn"
+                        class="text-gray-600 hover:text-herbal-600 focus:outline-none transition-transform active:scale-90">
+                        <i data-lucide="menu" class="h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu"
+            class="hidden md:hidden bg-white/95 backdrop-blur-md border-t border-gray-100 absolute w-full transition-all duration-300 origin-top">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="#beranda"
+                    class="block px-3 py-3 text-base font-medium text-gray-700 hover:text-herbal-600 hover:bg-herbal-50 rounded-md transition-colors">Beranda</a>
+                <a href="#manfaat"
+                    class="block px-3 py-3 text-base font-medium text-gray-700 hover:text-herbal-600 hover:bg-herbal-50 rounded-md transition-colors">Manfaat</a>
+                <a href="#produk"
+                    class="block px-3 py-3 text-base font-medium text-gray-700 hover:text-herbal-600 hover:bg-herbal-50 rounded-md transition-colors">Produk</a>
+                <a href="#reseller"
+                    class="block px-3 py-3 text-base font-medium text-gray-700 hover:text-herbal-600 hover:bg-herbal-50 rounded-md transition-colors">Reseller</a>
+                <a href="#lokasi"
+                    class="block px-3 py-3 text-base font-medium text-gray-700 hover:text-herbal-600 hover:bg-herbal-50 rounded-md transition-colors">Lokasi</a>
+                <a href="#galeri"
+                    class="block px-3 py-3 text-base font-medium text-gray-700 hover:text-herbal-600 hover:bg-herbal-50 rounded-md transition-colors">Galeri</a>
+                <a href="#testimoni"
+                    class="block px-3 py-3 text-base font-medium text-gray-700 hover:text-herbal-600 hover:bg-herbal-50 rounded-md transition-colors">Ulasan</a>
+                <a href="#kontak"
+                    class="block px-3 py-3 text-base font-medium text-herbal-600 font-bold bg-herbal-50 rounded-md transition-colors">Hubungi
+                    Kami</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="beranda"
+        class="relative pt-28 lg:pt-32 pb-20 min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-br from-stone-50 via-herbal-50 to-herbal-200">
+        <!-- Decorative Elements for Smooth Gradient Feel -->
+        <div
+            class="absolute top-20 right-0 w-[500px] h-[500px] bg-herbal-300/20 rounded-full blur-[100px] animate-float pointer-events-none">
+        </div>
+        <div
+            class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-stone-300/30 rounded-full blur-[80px] pointer-events-none">
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+                <!-- Text Content -->
+                <div class="lg:w-1/2 space-y-8 reveal active text-center lg:text-left">
+                    <div
+                        class="inline-flex items-center px-3 py-1 rounded-full bg-white/80 backdrop-blur-sm text-herbal-800 text-xs font-semibold tracking-wider uppercase mb-2 border border-herbal-200 shadow-sm mx-auto lg:mx-0">
+                        <span class="w-2 h-2 rounded-full bg-herbal-500 mr-2 animate-pulse"></span>
+                        100% Organik & Murni
+                    </div>
+                    <h1
+                        class="font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-herbal-900 leading-tight drop-shadow-sm">
+                        Harmoni Alam <br>
+                        <span class="italic font-light text-herbal-600">untuk Jiwa Anda</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-600 leading-relaxed max-w-lg mx-auto lg:mx-0">
+                        Temukan ketenangan sejati melalui koleksi minyak usap aromatic premium kami. Diekstrak dari
+                        tanaman pilihan untuk memulihkan keseimbangan tubuh dan pikiran.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 pt-4 justify-center lg:justify-start">
+                        <a href="#produk"
+                            class="px-8 py-4 bg-herbal-800 text-white rounded-full font-medium hover:bg-herbal-700 transition-all shadow-lg hover:shadow-herbal-500/30 text-center hover:-translate-y-1 active:scale-95 active:translate-y-0">
+                            Lihat Koleksi
+                        </a>
+                        <a href="#manfaat"
+                            class="px-8 py-4 bg-white/60 backdrop-blur-sm text-herbal-800 border border-herbal-200 rounded-full font-medium hover:bg-white transition-all text-center flex items-center justify-center gap-2 group hover:shadow-md active:scale-95">
+                            <i data-lucide="play-circle"
+                                class="w-5 h-5 group-hover:text-herbal-600 transition-colors group-hover:scale-110"></i>
+                            Pelajari Manfaat
+                        </a>
+                    </div>
+
+                    <div
+                        class="pt-8 flex items-center justify-center lg:justify-start gap-8 text-sm text-gray-500 font-medium">
+                        <div class="flex items-center gap-2 group cursor-default">
+                            <i data-lucide="check-circle-2"
+                                class="text-herbal-500 w-5 h-5 group-hover:scale-110 transition-transform"></i> Tanpa
+                            Bahan Kimia
+                        </div>
+                        <div class="flex items-center gap-2 group cursor-default">
+                            <i data-lucide="check-circle-2"
+                                class="text-herbal-500 w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                            Eco-Friendly
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side Image -->
+                <div class="lg:w-1/2 reveal delay-200 relative mt-12 lg:mt-0">
+                    <div class="relative z-10 w-full max-w-md mx-auto">
+                        <div
+                            class="absolute inset-0 bg-herbal-200 rounded-tl-[100px] rounded-br-[100px] rounded-tr-3xl rounded-bl-3xl transform rotate-3 scale-105 opacity-50">
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1608571423902-eed4a5e84e43?q=80&w=1000&auto=format&fit=crop"
+                            alt="Spa and Aromatherapy"
+                            class="relative rounded-tl-[100px] rounded-br-[100px] rounded-tr-3xl rounded-bl-3xl shadow-2xl w-full h-[480px] md:h-[500px] object-cover hover:scale-[1.01] transition-transform duration-700">
+
+                        <!-- Floating Badge -->
+                        <div
+                            class="absolute -bottom-6 -left-6 bg-white/90 backdrop-blur p-4 rounded-2xl shadow-xl flex items-center gap-3 animate-float border border-white/50">
+                            <div class="bg-herbal-100 p-2 rounded-full">
+                                <i data-lucide="award" class="w-6 h-6 text-herbal-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-wide">Teruji Klinis</p>
+                                <p class="font-bold text-herbal-900">Therapeutic Grade</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits / Philosophy Section -->
+    <section id="manfaat" class="py-24 bg-white relative overflow-hidden">
+        <div class="absolute -right-20 top-40 w-64 h-64 bg-herbal-100 rounded-full blur-3xl opacity-50"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                <span class="text-herbal-500 font-bold tracking-widest uppercase text-sm">Filosofi Kami</span>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-herbal-900 mt-3 mb-6">Mengapa Memilih Wazhima?
+                </h2>
+                <p class="text-gray-600">Kami percaya bahwa penyembuhan terbaik berasal dari alam. Setiap tetes minyak
+                    kami diproses dengan standar tertinggi untuk menjaga kemurniannya.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <!-- Feature 1 -->
+                <div
+                    class="reveal delay-100 p-8 rounded-3xl bg-herbal-50 hover:bg-herbal-100 transition-all duration-300 text-center group hover:-translate-y-2 hover:shadow-lg border border-transparent hover:border-herbal-200 cursor-default">
+                    <div
+                        class="w-16 h-16 mx-auto bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
+                        <i data-lucide="droplet" class="w-8 h-8 text-herbal-600"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-gray-900 mb-3">100% Ekstrak Murni</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Tanpa campuran minyak pembawa (carrier oil) murah
+                        atau pewangi sintetis. Hanya esensi tanaman murni.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div
+                    class="reveal delay-200 p-8 rounded-3xl bg-herbal-50 hover:bg-herbal-100 transition-all duration-300 text-center group hover:-translate-y-2 hover:shadow-lg border border-transparent hover:border-herbal-200 cursor-default">
+                    <div
+                        class="w-16 h-16 mx-auto bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-300">
+                        <i data-lucide="flower-2" class="w-8 h-8 text-herbal-600"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-gray-900 mb-3">Sumber Berkelanjutan</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Kami bekerja sama langsung dengan petani lokal yang
+                        menerapkan praktik pertanian ramah lingkungan.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div
+                    class="reveal delay-300 p-8 rounded-3xl bg-herbal-50 hover:bg-herbal-100 transition-all duration-300 text-center group hover:-translate-y-2 hover:shadow-lg border border-transparent hover:border-herbal-200 cursor-default">
+                    <div
+                        class="w-16 h-16 mx-auto bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
+                        <i data-lucide="heart-pulse" class="w-8 h-8 text-herbal-600"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-gray-900 mb-3">Therapeutic Grade</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Diformulasikan khusus untuk terapi relaksasi,
+                        mengurangi stres, dan meningkatkan kualitas tidur.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Section -->
+    <section id="produk" class="py-24 bg-stone-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-end mb-12 reveal">
+                <div>
+                    <h2 class="font-serif text-3xl md:text-4xl font-bold text-herbal-900">Koleksi Terlaris</h2>
+                    <p class="text-gray-600 mt-2">Pilihan favorit pelanggan kami bulan ini.</p>
+                </div>
+                <a href="#"
+                    class="hidden md:flex items-center text-herbal-600 font-medium hover:text-herbal-800 transition-all group hover:translate-x-1">
+                    Lihat Semua <i data-lucide="arrow-right"
+                        class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Product Card 1 -->
+                <div
+                    class="reveal delay-100 bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:shadow-herbal-900/10 transition-all duration-500 group border border-gray-100 hover:border-herbal-200 hover:-translate-y-2 flex flex-col h-full">
+                    <div class="relative h-64 img-zoom-container bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1608571424266-edeb2bbefdec?q=80&w=1000&auto=format&fit=crop"
+                            alt="Lavender Oil" class="w-full h-full object-cover">
+                        <div
+                            class="absolute top-3 right-3 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-herbal-800 shadow-sm z-10">
+                            Best Seller</div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3
+                                class="font-serif text-lg font-bold text-gray-900 group-hover:text-herbal-700 transition-colors">
+                                Royal Lavender</h3>
+                            <span class="text-herbal-600 font-bold bg-herbal-50 px-2 py-1 rounded-md">Rp 125.000</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mb-4 line-clamp-2">Menenangkan pikiran & membantu tidur nyenyak
+                            setelah hari yang panjang.</p>
+
+                        <div class="mt-auto space-y-2">
+                            <button onclick="openOrderModal('Royal Lavender')"
+                                class="w-full py-3 border border-herbal-200 text-herbal-800 rounded-xl hover:bg-herbal-800 hover:border-herbal-800 hover:text-white transition-all duration-300 font-medium text-sm flex justify-center items-center gap-2 active:scale-95 group/btn">
+                                <i data-lucide="shopping-cart"
+                                    class="w-4 h-4 transition-transform group-hover/btn:-translate-y-1 group-active/btn:translate-y-0"></i>
+                                Pesan Sekarang
+                            </button>
+                            <button onclick="openProductDetail('lavender')"
+                                class="w-full py-2 border border-transparent text-gray-500 rounded-xl hover:text-herbal-600 hover:bg-herbal-50 transition-all duration-300 font-medium text-xs flex justify-center items-center gap-2">
+                                Detail Produk
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 2 -->
+                <div
+                    class="reveal delay-200 bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:shadow-herbal-900/10 transition-all duration-500 group border border-gray-100 hover:border-herbal-200 hover:-translate-y-2 flex flex-col h-full">
+                    <div class="relative h-64 img-zoom-container bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?q=80&w=1000&auto=format&fit=crop"
+                            alt="Peppermint Oil" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3
+                                class="font-serif text-lg font-bold text-gray-900 group-hover:text-herbal-700 transition-colors">
+                                Fresh Peppermint</h3>
+                            <span class="text-herbal-600 font-bold bg-herbal-50 px-2 py-1 rounded-md">Rp 110.000</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mb-4 line-clamp-2">Meredakan sakit kepala & melegakan pernapasan
+                            saat flu.</p>
+                        <div class="mt-auto space-y-2">
+                            <button onclick="openOrderModal('Fresh Peppermint')"
+                                class="w-full py-3 border border-herbal-200 text-herbal-800 rounded-xl hover:bg-herbal-800 hover:border-herbal-800 hover:text-white transition-all duration-300 font-medium text-sm flex justify-center items-center gap-2 active:scale-95 group/btn">
+                                <i data-lucide="shopping-cart"
+                                    class="w-4 h-4 transition-transform group-hover/btn:-translate-y-1 group-active/btn:translate-y-0"></i>
+                                Pesan Sekarang
+                            </button>
+                            <button onclick="openProductDetail('peppermint')"
+                                class="w-full py-2 border border-transparent text-gray-500 rounded-xl hover:text-herbal-600 hover:bg-herbal-50 transition-all duration-300 font-medium text-xs flex justify-center items-center gap-2">
+                                Detail Produk
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 3 -->
+                <div
+                    class="reveal delay-300 bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:shadow-herbal-900/10 transition-all duration-500 group border border-gray-100 hover:border-herbal-200 hover:-translate-y-2 flex flex-col h-full">
+                    <div class="relative h-64 img-zoom-container bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1615486511484-92e172cc416d?q=80&w=1000&auto=format&fit=crop"
+                            alt="Lemon Oil" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3
+                                class="font-serif text-lg font-bold text-gray-900 group-hover:text-herbal-700 transition-colors">
+                                Citrus Lemon</h3>
+                            <span class="text-herbal-600 font-bold bg-herbal-50 px-2 py-1 rounded-md">Rp 95.000</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mb-4 line-clamp-2">Meningkatkan mood, fokus, & energi positif
+                            sepanjang hari.</p>
+                        <div class="mt-auto space-y-2">
+                            <button onclick="openOrderModal('Citrus Lemon')"
+                                class="w-full py-3 border border-herbal-200 text-herbal-800 rounded-xl hover:bg-herbal-800 hover:border-herbal-800 hover:text-white transition-all duration-300 font-medium text-sm flex justify-center items-center gap-2 active:scale-95 group/btn">
+                                <i data-lucide="shopping-cart"
+                                    class="w-4 h-4 transition-transform group-hover/btn:-translate-y-1 group-active/btn:translate-y-0"></i>
+                                Pesan Sekarang
+                            </button>
+                            <button onclick="openProductDetail('lemon')"
+                                class="w-full py-2 border border-transparent text-gray-500 rounded-xl hover:text-herbal-600 hover:bg-herbal-50 transition-all duration-300 font-medium text-xs flex justify-center items-center gap-2">
+                                Detail Produk
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 4 -->
+                <div
+                    class="reveal delay-200 bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:shadow-herbal-900/10 transition-all duration-500 group border border-gray-100 hover:border-herbal-200 hover:-translate-y-2 flex flex-col h-full">
+                    <div class="relative h-64 img-zoom-container bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1556228720-19ee797374b8?q=80&w=1000&auto=format&fit=crop"
+                            alt="Eucalyptus Oil" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3
+                                class="font-serif text-lg font-bold text-gray-900 group-hover:text-herbal-700 transition-colors">
+                                Pure Eucalyptus</h3>
+                            <span class="text-herbal-600 font-bold bg-herbal-50 px-2 py-1 rounded-md">Rp 115.000</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mb-4 line-clamp-2">Antiseptik alami & menyegarkan udara ruangan
+                            dengan instan.</p>
+                        <div class="mt-auto space-y-2">
+                            <button onclick="openOrderModal('Pure Eucalyptus')"
+                                class="w-full py-3 border border-herbal-200 text-herbal-800 rounded-xl hover:bg-herbal-800 hover:border-herbal-800 hover:text-white transition-all duration-300 font-medium text-sm flex justify-center items-center gap-2 active:scale-95 group/btn">
+                                <i data-lucide="shopping-cart"
+                                    class="w-4 h-4 transition-transform group-hover/btn:-translate-y-1 group-active/btn:translate-y-0"></i>
+                                Pesan Sekarang
+                            </button>
+                            <button onclick="openProductDetail('eucalyptus')"
+                                class="w-full py-2 border border-transparent text-gray-500 rounded-xl hover:text-herbal-600 hover:bg-herbal-50 transition-all duration-300 font-medium text-xs flex justify-center items-center gap-2">
+                                Detail Produk
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center md:hidden reveal">
+                <a href="#"
+                    class="inline-flex items-center text-herbal-600 font-medium hover:text-herbal-800 transition-colors group">
+                    Lihat Semua Produk <i data-lucide="arrow-right"
+                        class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reseller Section -->
+    <section id="reseller" class="py-24 bg-herbal-800 relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5">
+        </div>
+        <div class="absolute top-0 left-0 w-64 h-64 bg-herbal-600 rounded-full blur-[100px] opacity-30 animate-pulse">
+        </div>
+        <div class="absolute bottom-0 right-0 w-64 h-64 bg-herbal-400 rounded-full blur-[100px] opacity-20"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div
+                class="bg-herbal-900/50 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-herbal-700 shadow-2xl reveal">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-12">
+                    <div class="md:w-1/2 text-center md:text-left">
+                        <span
+                            class="inline-block py-1 px-3 rounded-full bg-herbal-500/20 text-herbal-300 text-xs font-bold tracking-wider uppercase mb-4 border border-herbal-500/30">
+                            Peluang Bisnis
+                        </span>
+                        <h2 class="font-serif text-3xl md:text-4xl font-bold text-white mb-4">
+                            Mari Tumbuh Bersama <br> <span class="text-herbal-400">Wazhima</span>
+                        </h2>
+                        <p class="text-herbal-100 text-lg mb-8 leading-relaxed">
+                            Bergabunglah menjadi mitra reseller resmi kami. Dapatkan harga spesial, materi promosi
+                            eksklusif, dan bimbingan untuk menyebarkan kebaikan aromaterapi herbal ke lebih banyak
+                            orang.
+                        </p>
+
+                        <div class="grid grid-cols-2 gap-4 mb-8">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-herbal-700 p-2 rounded-lg text-herbal-300">
+                                    <i data-lucide="percent" class="w-5 h-5"></i>
+                                </div>
+                                <span class="text-sm text-gray-300 font-medium">Margin Profit Tinggi</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="bg-herbal-700 p-2 rounded-lg text-herbal-300">
+                                    <i data-lucide="book-open" class="w-5 h-5"></i>
+                                </div>
+                                <span class="text-sm text-gray-300 font-medium">Support Edukasi</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="bg-herbal-700 p-2 rounded-lg text-herbal-300">
+                                    <i data-lucide="image" class="w-5 h-5"></i>
+                                </div>
+                                <span class="text-sm text-gray-300 font-medium">Konten Marketing</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="bg-herbal-700 p-2 rounded-lg text-herbal-300">
+                                    <i data-lucide="shield-check" class="w-5 h-5"></i>
+                                </div>
+                                <span class="text-sm text-gray-300 font-medium">Produk Terjamin</span>
+                            </div>
+                        </div>
+
+                        <button onclick="joinReseller()"
+                            class="w-full md:w-auto px-8 py-4 bg-white text-herbal-900 rounded-full font-bold hover:bg-herbal-50 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 flex items-center justify-center gap-2 group">
+                            <i data-lucide="user-plus" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                            Daftar Reseller Sekarang
+                        </button>
+                    </div>
+
+                    <div class="md:w-1/2 relative">
+                        <div
+                            class="relative z-10 rounded-2xl overflow-hidden shadow-2xl border-4 border-herbal-700/50 transform rotate-2 hover:rotate-0 transition-all duration-500">
+                            <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1000&auto=format&fit=crop"
+                                alt="Team Meeting" class="w-full h-auto object-cover">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-herbal-900/90 to-transparent flex flex-col justify-end p-6">
+                                <p class="text-white font-serif italic text-lg">"Bergabung dengan Wazhima bukan hanya
+                                    soal bisnis, tapi tentang berbagi gaya hidup sehat."</p>
+                            </div>
+                        </div>
+                        <div
+                            class="absolute -top-4 -right-4 w-full h-full border-2 border-herbal-500/30 rounded-2xl -z-10">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reseller Locations Section (New) -->
+    <section id="lokasi" class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <span class="text-herbal-500 font-bold tracking-widest uppercase text-sm">Jangkauan Kami</span>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-herbal-900 mt-2">Temukan Reseller Terdekat
+                </h2>
+                <div class="w-20 h-1 bg-herbal-400 mx-auto mt-4 rounded-full"></div>
+                <p class="text-gray-600 mt-4 max-w-2xl mx-auto">Kunjungi mitra resmi kami di berbagai kota untuk
+                    mendapatkan produk Wazhima secara langsung.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Location 1: Jakarta (Existing) -->
+                <a href="https://www.google.com/maps/search/?api=1&query=Mall+Grand+Indonesia+Jakarta" target="_blank"
+                    class="reveal delay-100 group block bg-stone-50 p-6 rounded-2xl border border-stone-100 hover:border-herbal-300 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="bg-white p-3 rounded-full shadow-sm group-hover:bg-herbal-100 transition-colors">
+                            <i data-lucide="map-pin" class="w-6 h-6 text-herbal-600"></i>
+                        </div>
+                        <div
+                            class="flex items-center gap-1 text-xs font-medium text-gray-400 group-hover:text-herbal-600 transition-colors">
+                            Buka Maps <i data-lucide="external-link" class="w-3 h-3"></i>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-lg text-herbal-900 mb-1">Jakarta Pusat</h3>
+                    <p class="text-sm font-semibold text-herbal-600 mb-2">Herbal Center Grand Indo</p>
+                    <p class="text-xs text-gray-500 leading-relaxed">Lt. LG West Mall, Jl. M.H. Thamrin No.1</p>
+                </a>
+
+                <!-- Location 2: Bandung (Existing) -->
+                <a href="https://www.google.com/maps/search/?api=1&query=Paris+Van+Java+Bandung" target="_blank"
+                    class="reveal delay-200 group block bg-stone-50 p-6 rounded-2xl border border-stone-100 hover:border-herbal-300 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="bg-white p-3 rounded-full shadow-sm group-hover:bg-herbal-100 transition-colors">
+                            <i data-lucide="map-pin" class="w-6 h-6 text-herbal-600"></i>
+                        </div>
+                        <div
+                            class="flex items-center gap-1 text-xs font-medium text-gray-400 group-hover:text-herbal-600 transition-colors">
+                            Buka Maps <i data-lucide="external-link" class="w-3 h-3"></i>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-lg text-herbal-900 mb-1">Bandung</h3>
+                    <p class="text-sm font-semibold text-herbal-600 mb-2">Wazhima Store PVJ</p>
+                    <p class="text-xs text-gray-500 leading-relaxed">Paris Van Java, Jl. Sukajadi No.131-139</p>
+                </a>
+
+                <!-- Location 3: Surabaya (OPEN RESELLER) -->
+                <div onclick="joinReseller()"
+                    class="cursor-pointer reveal delay-300 group block bg-white p-6 rounded-2xl border-2 border-dashed border-herbal-300 hover:border-herbal-500 hover:bg-herbal-50 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
+                    <!-- Banner Open -->
+                    <div
+                        class="absolute top-3 right-3 bg-herbal-100 text-herbal-700 text-[10px] font-bold px-2 py-1 rounded">
+                        AVAILABLE</div>
+
+                    <div class="flex items-start justify-between mb-4">
+                        <div
+                            class="bg-herbal-50 p-3 rounded-full shadow-sm group-hover:bg-white transition-colors border border-herbal-100">
+                            <i data-lucide="store" class="w-6 h-6 text-herbal-600"></i>
+                        </div>
+                        <div
+                            class="flex items-center gap-1 text-xs font-bold text-herbal-600 group-hover:text-herbal-800 transition-colors">
+                            Gabung <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-lg text-herbal-900 mb-1">Surabaya</h3>
+                    <p class="text-sm font-bold text-herbal-500 mb-2 tracking-wide">OPEN RESELLER</p>
+                    <p class="text-xs text-gray-500 leading-relaxed">Jadilah mitra pertama kami di kota ini. Dapatkan
+                        penawaran eksklusif!</p>
+                </div>
+
+                <!-- Location 4: Bali (OPEN RESELLER) -->
+                <div onclick="joinReseller()"
+                    class="cursor-pointer reveal delay-300 group block bg-white p-6 rounded-2xl border-2 border-dashed border-herbal-300 hover:border-herbal-500 hover:bg-herbal-50 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
+                    <!-- Banner Open -->
+                    <div
+                        class="absolute top-3 right-3 bg-herbal-100 text-herbal-700 text-[10px] font-bold px-2 py-1 rounded">
+                        AVAILABLE</div>
+
+                    <div class="flex items-start justify-between mb-4">
+                        <div
+                            class="bg-herbal-50 p-3 rounded-full shadow-sm group-hover:bg-white transition-colors border border-herbal-100">
+                            <i data-lucide="store" class="w-6 h-6 text-herbal-600"></i>
+                        </div>
+                        <div
+                            class="flex items-center gap-1 text-xs font-bold text-herbal-600 group-hover:text-herbal-800 transition-colors">
+                            Gabung <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-lg text-herbal-900 mb-1">Bali</h3>
+                    <p class="text-sm font-bold text-herbal-500 mb-2 tracking-wide">OPEN RESELLER</p>
+                    <p class="text-xs text-gray-500 leading-relaxed">Jadilah mitra pertama kami di kota ini. Dapatkan
+                        penawaran eksklusif!</p>
+                </div>
+            </div>
+
+            <!-- View All Link -->
+            <div class="mt-12 text-center">
+                <a href="https://www.google.com/maps" target="_blank"
+                    class="inline-flex items-center gap-2 text-herbal-600 font-bold hover:text-herbal-800 transition-colors group">
+                    <span>Lihat Semua Lokasi</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="galeri" class="pt-24 pb-12 bg-herbal-50 reveal">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-herbal-500 font-bold tracking-widest uppercase text-sm">Visual</span>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-gray-900 mt-2">Galeri Wazhima</h2>
+                <div class="w-20 h-1 bg-herbal-400 mx-auto mt-4 rounded-full"></div>
+                <p class="text-gray-600 mt-4 max-w-2xl mx-auto">Sekilas tentang proses, bahan alami, dan ketenangan yang
+                    kami hadirkan untuk Anda.</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 h-full">
+                <!-- Large Item -->
+                <div class="col-span-2 row-span-2 relative group overflow-hidden rounded-2xl cursor-pointer shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=1000&auto=format&fit=crop"
+                        alt="Spa Treatment"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div
+                        class="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                        <span
+                            class="text-white font-serif italic text-2xl tracking-wide border-b border-white pb-1">Ketenangan</span>
+                    </div>
+                </div>
+
+                <!-- Tall Item -->
+                <div class="col-span-1 row-span-2 relative group overflow-hidden rounded-2xl cursor-pointer shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1000&auto=format&fit=crop"
+                        alt="Essential Oil Bottle"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div
+                        class="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                        <span
+                            class="text-white font-serif italic text-lg tracking-wide border-b border-white pb-1">Kemurnian</span>
+                    </div>
+                </div>
+
+                <!-- Small Item 1 -->
+                <div class="col-span-1 row-span-1 relative group overflow-hidden rounded-2xl cursor-pointer shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1471864190281-a93a3070b6de?q=80&w=1000&auto=format&fit=crop"
+                        alt="Dried Herbs"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div
+                        class="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                        <i data-lucide="flower" class="text-white w-8 h-8"></i>
+                    </div>
+                </div>
+
+                <!-- Small Item 2 -->
+                <div class="col-span-1 row-span-1 relative group overflow-hidden rounded-2xl cursor-pointer shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1602928321679-560bb453f190?q=80&w=1000&auto=format&fit=crop"
+                        alt="Aromatherapy Diffuser"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div
+                        class="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                        <i data-lucide="wind" class="text-white w-8 h-8"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <a href="#"
+                    class="inline-flex items-center justify-center gap-2 text-herbal-600 font-medium hover:text-herbal-800 transition-colors group px-6 py-2 rounded-full border border-herbal-200 hover:bg-white hover:shadow-sm">
+                    <i data-lucide="instagram" class="w-5 h-5 group-hover:scale-110 transition-transform"></i> Lihat
+                    Lebih Banyak di Instagram
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section (New) -->
+    <section id="faq" class="pt-12 pb-24 bg-stone-50 relative">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <span class="text-herbal-500 font-bold tracking-widest uppercase text-sm">Informasi</span>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-herbal-900 mt-2">Pertanyaan Umum</h2>
+                <div class="w-20 h-1 bg-herbal-400 mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="space-y-4 reveal delay-100">
+                <!-- FAQ Item 1 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group">
+                    <button onclick="toggleFaq(this)"
+                        class="w-full flex items-center justify-between p-6 text-left hover:bg-herbal-50 transition-colors">
+                        <span class="font-bold text-lg text-herbal-900">Apakah produk Wazhima aman untuk ibu
+                            hamil?</span>
+                        <i data-lucide="chevron-down"
+                            class="w-5 h-5 text-gray-400 transition-transform duration-300 group-hover:text-herbal-500"></i>
+                    </button>
+                    <div class="hidden px-6 pb-6 text-gray-600 leading-relaxed border-t border-gray-50">
+                        <p>Sebagian besar produk kami aman, namun untuk ibu hamil disarankan menghindari varian tertentu
+                            seperti Sage atau Rosemary. Varian Lavender dan Lemon umumnya aman digunakan dalam dosis
+                            rendah. Selalu konsultasikan dengan dokter Anda sebelum penggunaan.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group">
+                    <button onclick="toggleFaq(this)"
+                        class="w-full flex items-center justify-between p-6 text-left hover:bg-herbal-50 transition-colors">
+                        <span class="font-bold text-lg text-herbal-900">Bagaimana cara penggunaan essential oil?</span>
+                        <i data-lucide="chevron-down"
+                            class="w-5 h-5 text-gray-400 transition-transform duration-300 group-hover:text-herbal-500"></i>
+                    </button>
+                    <div class="hidden px-6 pb-6 text-gray-600 leading-relaxed border-t border-gray-50">
+                        <p>Anda bisa meneteskan 3-5 tetes ke dalam diffuser berisi air, mencampurnya dengan carrier oil
+                            untuk pijat, atau meneteskan ke telapak tangan lalu dihirup perlahan.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group">
+                    <button onclick="toggleFaq(this)"
+                        class="w-full flex items-center justify-between p-6 text-left hover:bg-herbal-50 transition-colors">
+                        <span class="font-bold text-lg text-herbal-900">Apakah bisa dikirim ke seluruh Indonesia?</span>
+                        <i data-lucide="chevron-down"
+                            class="w-5 h-5 text-gray-400 transition-transform duration-300 group-hover:text-herbal-500"></i>
+                    </button>
+                    <div class="hidden px-6 pb-6 text-gray-600 leading-relaxed border-t border-gray-50">
+                        <p>Ya, kami melayani pengiriman ke seluruh wilayah Indonesia menggunakan berbagai ekspedisi
+                            terpercaya dengan pengemasan yang sangat aman (bubble wrap tebal).</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group">
+                    <button onclick="toggleFaq(this)"
+                        class="w-full flex items-center justify-between p-6 text-left hover:bg-herbal-50 transition-colors">
+                        <span class="font-bold text-lg text-herbal-900">Apakah produk ini 100% murni?</span>
+                        <i data-lucide="chevron-down"
+                            class="w-5 h-5 text-gray-400 transition-transform duration-300 group-hover:text-herbal-500"></i>
+                    </button>
+                    <div class="hidden px-6 pb-6 text-gray-600 leading-relaxed border-t border-gray-50">
+                        <p>Tentu. Wazhima menjamin keaslian 100% pure essential oil therapeutic grade tanpa campuran
+                            bahan kimia sintetik atau pewangi buatan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial Section -->
+    <!-- Footer -->
+    <footer id="kontak" class="bg-gray-900 text-gray-300 py-12 border-t border-gray-800 reveal">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div class="col-span-1">
+                    <div class="flex items-center gap-2 mb-4 text-white">
+                        <i data-lucide="leaf" class="h-6 w-6 text-herbal-500"></i>
+                        <span class="font-serif text-xl font-bold">Wazhima</span>
+                    </div>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        Menghadirkan kebaikan alam murni ke dalam setiap tetes minyak aromaterapi untuk keseimbangan
+                        hidup Anda.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-wider">Navigasi</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#"
+                                class="hover:text-herbal-400 transition-colors hover:pl-2 inline-block">Beranda</a></li>
+                        <li><a href="#" class="hover:text-herbal-400 transition-colors hover:pl-2 inline-block">Tentang
+                                Kami</a></li>
+                        <li><a href="#"
+                                class="hover:text-herbal-400 transition-colors hover:pl-2 inline-block">Produk</a></li>
+                        <li><a href="#" class="hover:text-herbal-400 transition-colors hover:pl-2 inline-block">Blog</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-wider">Hubungi Kami</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center gap-2 group cursor-pointer hover:text-white transition-colors"><i
+                                data-lucide="map-pin" class="w-4 h-4 text-herbal-500 group-hover:animate-bounce"></i>
+                            Jakarta, Indonesia</li>
+                        <li class="flex items-center gap-2 group cursor-pointer hover:text-white transition-colors"><i
+                                data-lucide="phone" class="w-4 h-4 text-herbal-500"></i> +62 812 3456 7890</li>
+                        <li class="flex items-center gap-2 group cursor-pointer hover:text-white transition-colors"><i
+                                data-lucide="mail" class="w-4 h-4 text-herbal-500"></i> hello@auranatura.id</li>
+                    </ul>
+                    <div class="flex gap-4 mt-4">
+                        <a href="#"
+                            class="text-gray-400 hover:text-white transition-all hover:scale-110 hover:rotate-6"><i
+                                data-lucide="instagram" class="w-5 h-5"></i></a>
+                        <a href="#"
+                            class="text-gray-400 hover:text-white transition-all hover:scale-110 hover:-rotate-6"><i
+                                data-lucide="facebook" class="w-5 h-5"></i></a>
+                        <a href="#"
+                            class="text-gray-400 hover:text-white transition-all hover:scale-110 hover:rotate-6"><i
+                                data-lucide="twitter" class="w-5 h-5"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 text-center text-xs text-gray-500">
+                &copy; 2024 Wazhima. All rights reserved. Designed for Demo.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Order Modal -->
+    <div id="order-modal" class="fixed inset-0 z-[60] hidden overflow-y-auto" aria-labelledby="modal-title"
+        role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Background overlay -->
+            <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" aria-hidden="true"
+                onclick="closeModal()"></div>
+
+            <!-- Modal panel -->
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div
+                class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full modal-enter">
+                <div class="px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div
+                            class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-herbal-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <i data-lucide="shopping-cart" class="h-6 w-6 text-herbal-600"></i>
+                        </div>
+                        <div class="w-full mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-xl font-serif font-bold leading-6 text-herbal-900" id="modal-title">
+                                Formulir Pemesanan
+                            </h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500 mb-4">
+                                    Silakan lengkapi data berikut untuk memesan <span id="modal-product-name"
+                                        class="font-bold text-herbal-700"></span>.
+                                </p>
+                                <form id="order-form" class="space-y-4 text-left">
+                                    <!-- Size Selection (New) -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Pilih Ukuran</label>
+                                        <div class="grid grid-cols-3 gap-3">
+                                            <label class="cursor-pointer">
+                                                <input type="radio" name="product-size" value="20ML"
+                                                    class="peer sr-only" checked>
+                                                <div
+                                                    class="rounded-md border border-gray-300 px-3 py-2 text-center text-sm font-medium text-gray-600 hover:bg-gray-50 peer-checked:border-herbal-500 peer-checked:bg-herbal-50 peer-checked:text-herbal-700 peer-checked:ring-1 peer-checked:ring-herbal-500 transition-all">
+                                                    20ML
+                                                </div>
+                                            </label>
+                                            <label class="cursor-pointer">
+                                                <input type="radio" name="product-size" value="60ML"
+                                                    class="peer sr-only">
+                                                <div
+                                                    class="rounded-md border border-gray-300 px-3 py-2 text-center text-sm font-medium text-gray-600 hover:bg-gray-50 peer-checked:border-herbal-500 peer-checked:bg-herbal-50 peer-checked:text-herbal-700 peer-checked:ring-1 peer-checked:ring-herbal-500 transition-all">
+                                                    60ML
+                                                </div>
+                                            </label>
+                                            <label class="cursor-pointer">
+                                                <input type="radio" name="product-size" value="100ML"
+                                                    class="peer sr-only">
+                                                <div
+                                                    class="rounded-md border border-gray-300 px-3 py-2 text-center text-sm font-medium text-gray-600 hover:bg-gray-50 peer-checked:border-herbal-500 peer-checked:bg-herbal-50 peer-checked:text-herbal-700 peer-checked:ring-1 peer-checked:ring-herbal-500 transition-all">
+                                                    100ML
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label for="customer-name" class="block text-sm font-medium text-gray-700">Nama
+                                            Lengkap</label>
+                                        <input type="text" id="customer-name" placeholder="Nama Anda" required
+                                            class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:ring-herbal-500 focus:border-herbal-500 shadow-sm focus:outline-none focus:ring-2">
+                                    </div>
+                                    <div>
+                                        <label for="customer-address"
+                                            class="block text-sm font-medium text-gray-700">Alamat Pengiriman</label>
+                                        <textarea id="customer-address" rows="3"
+                                            placeholder="Alamat lengkap (Jalan, RT/RW, Kota, Kode Pos)" required
+                                            class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:ring-herbal-500 focus:border-herbal-500 shadow-sm focus:outline-none focus:ring-2"></textarea>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label for="order-quantity"
+                                                class="block text-sm font-medium text-gray-700">Jumlah Pesanan</label>
+                                            <input type="number" id="order-quantity" value="1" min="1" required
+                                                class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:ring-herbal-500 focus:border-herbal-500 shadow-sm focus:outline-none focus:ring-2">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="px-4 py-3 bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse gap-2">
+                    <button type="button" onclick="sendToWhatsapp()"
+                        class="w-full inline-flex justify-center rounded-full border border-transparent shadow-sm px-4 py-3 bg-herbal-600 text-base font-medium text-white hover:bg-herbal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-herbal-500 sm:ml-3 sm:w-auto sm:text-sm items-center gap-2 transition-all hover:-translate-y-0.5">
+                        <i data-lucide="message-circle" class="w-4 h-4"></i> Lanjutkan ke WhatsApp
+                    </button>
+                    <button type="button" onclick="closeModal()"
+                        class="mt-3 w-full inline-flex justify-center rounded-full border border-gray-300 shadow-sm px-4 py-3 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-herbal-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-all">
+                        Batal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal (New) -->
+    <div id="product-detail-modal" class="fixed inset-0 z-[70] hidden overflow-y-auto"
+        aria-labelledby="product-detail-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Background overlay -->
+            <div class="fixed inset-0 transition-opacity bg-gray-900 bg-opacity-75 backdrop-blur-sm" aria-hidden="true"
+                onclick="closeProductDetail()"></div>
+
+            <!-- Modal panel -->
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div
+                class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-2xl shadow-2xl sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full modal-enter relative">
+
+                <!-- Close button -->
+                <button onclick="closeProductDetail()"
+                    class="absolute top-4 right-4 z-10 bg-white/80 backdrop-blur rounded-full p-2 text-gray-500 hover:text-gray-800 hover:bg-white transition-colors">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+
+                <div class="flex flex-col md:flex-row h-full">
+                    <!-- Image Section -->
+                    <div class="md:w-1/2 h-64 md:h-auto relative bg-gray-100">
+                        <img id="detail-image" src="" alt="Product Detail" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                    </div>
+
+                    <!-- Content Section -->
+                    <div class="md:w-1/2 p-8 md:p-10 flex flex-col h-full overflow-y-auto max-h-[80vh] md:max-h-auto">
+                        <div class="mb-6">
+                            <span
+                                class="inline-block px-3 py-1 rounded-full bg-herbal-100 text-herbal-700 text-xs font-bold tracking-wider uppercase mb-2">Premium
+                                Quality</span>
+                            <h2 id="detail-name" class="font-serif text-3xl font-bold text-gray-900 mb-2"></h2>
+                            <p id="detail-price" class="text-xl font-bold text-herbal-600"></p>
+                        </div>
+
+                        <div class="space-y-6 text-gray-600 mb-8">
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-sm uppercase tracking-wider mb-2">Deskripsi</h4>
+                                <p id="detail-description" class="text-sm leading-relaxed"></p>
+                            </div>
+
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-sm uppercase tracking-wider mb-2">Manfaat Utama
+                                </h4>
+                                <ul id="detail-benefits" class="space-y-2 text-sm">
+                                    <!-- Benefits will be injected here -->
+                                </ul>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
+                                <div>
+                                    <span class="block text-xs text-gray-400 uppercase">Ukuran</span>
+                                    <span id="detail-size" class="font-bold text-gray-800"></span>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-gray-400 uppercase">Kategori</span>
+                                    <span class="font-bold text-gray-800">Essential Oil</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-auto pt-6 border-t border-gray-100 flex gap-3">
+                            <button onclick="orderFromDetail()"
+                                class="flex-1 py-3 bg-herbal-600 text-white rounded-xl font-bold hover:bg-herbal-700 transition-all shadow-lg hover:shadow-herbal-500/30 flex items-center justify-center gap-2 hover:-translate-y-0.5">
+                                <i data-lucide="shopping-bag" class="w-5 h-5"></i> Pesan Sekarang
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Scroll Animation Observer (The Core Logic)
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1 // Trigger when 10% of element is visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, observerOptions);
+
+            const revealElements = document.querySelectorAll('.reveal');
+            revealElements.forEach(el => observer.observe(el));
+        });
+
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+            if (!menu.classList.contains('hidden')) {
+                menu.classList.add('animate-in', 'slide-in-from-top-2', 'fade-in');
+            }
+        });
+
+        // Sticky Navbar effect with scroll direction detection
+        const navbar = document.getElementById('navbar');
+        let lastScrollY = window.scrollY;
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 10) {
+                navbar.classList.add('shadow-md');
+            } else {
+                navbar.classList.remove('shadow-md');
+            }
+            lastScrollY = window.scrollY;
+        });
+
+        // --- PRODUCT DATA ---
+        const products = {
+            'lavender': {
+                name: 'Royal Lavender',
+                price: 'Mulai Rp 125.000',
+                image: 'https://images.unsplash.com/photo-1608571424266-edeb2bbefdec?q=80&w=1000&auto=format&fit=crop',
+                description: 'Minyak esensial Lavender kualitas premium yang disuling dari bunga Lavandula angustifolia pilihan. Dikenal luas karena kemampuannya menciptakan suasana tenang dan relaksasi mendalam. Aroma floral yang lembut sangat efektif untuk meredakan ketegangan saraf setelah seharian beraktivitas.',
+                benefits: [
+                    'Membantu mengatasi insomnia dan meningkatkan kualitas tidur',
+                    'Meredakan kecemasan, stres, dan depresi ringan',
+                    'Dapat dioleskan untuk menyejukkan kulit iritasi ringan atau gigitan serangga'
+                ],
+                size: '20ML, 60ML, 100ML'
+            },
+            'peppermint': {
+                name: 'Fresh Peppermint',
+                price: 'Mulai Rp 110.000',
+                image: 'https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?q=80&w=1000&auto=format&fit=crop',
+                description: 'Ekstrak daun mint murni yang memberikan sensasi dingin menyegarkan. Aroma menthol yang kuat sangat ampuh untuk membuka saluran pernapasan dan meningkatkan konsentrasi.',
+                benefits: [
+                    'Meredakan sakit kepala dan migrain',
+                    'Melegakan hidung tersumbat dan gejala flu',
+                    'Meningkatkan fokus dan energi saat bekerja'
+                ],
+                size: '20ML, 60ML, 100ML'
+            },
+            'lemon': {
+                name: 'Citrus Lemon',
+                price: 'Mulai Rp 95.000',
+                image: 'https://images.unsplash.com/photo-1615486511484-92e172cc416d?q=80&w=1000&auto=format&fit=crop',
+                description: 'Diambil dari kulit buah lemon segar melalui metode cold-press untuk menjaga kemurnian aromanya. Memberikan nuansa ceria, bersih, dan membangkitkan semangat.',
+                benefits: [
+                    'Meningkatkan mood positif dan mengurangi kelelahan mental',
+                    'Membersihkan udara dari bau tak sedap',
+                    'Membantu sistem kekebalan tubuh'
+                ],
+                size: '20ML, 60ML, 100ML'
+            },
+            'eucalyptus': {
+                name: 'Pure Eucalyptus',
+                price: 'Mulai Rp 115.000',
+                image: 'https://images.unsplash.com/photo-1556228720-19ee797374b8?q=80&w=1000&auto=format&fit=crop',
+                description: 'Minyak kayu putih murni dengan aroma kamper yang khas dan kuat. Sangat populer digunakan untuk kesehatan pernapasan dan perlindungan alami dari bakteri.',
+                benefits: [
+                    'Antiseptik dan antibakteri alami untuk udara ruangan',
+                    'Membantu mengencerkan dahak dan meredakan batuk',
+                    'Menyegarkan ruangan yang pengap'
+                ],
+                size: '20ML, 60ML, 100ML'
+            }
+        };
+
+        // --- ORDER MODAL LOGIC ---
+        let currentProduct = '';
+        const modal = document.getElementById('order-modal');
+        const modalPanel = modal.querySelector('.inline-block');
+
+        function openOrderModal(productName) {
+            // Close detail modal if open
+            const detailModal = document.getElementById('product-detail-modal');
+            if (!detailModal.classList.contains('hidden')) {
+                closeProductDetail();
+            }
+
+            currentProduct = productName;
+            document.getElementById('modal-product-name').innerText = productName;
+
+            modal.classList.remove('hidden');
+
+            // Add animation classes
+            setTimeout(() => {
+                modalPanel.classList.remove('modal-enter');
+                modalPanel.classList.add('modal-enter-active');
+            }, 10);
+        }
+
+        function closeModal() {
+            // Exit animation
+            modalPanel.classList.remove('modal-enter-active');
+            modalPanel.classList.add('modal-exit-active');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modalPanel.classList.remove('modal-exit-active');
+                modalPanel.classList.add('modal-enter'); // Reset for next open
+            }, 200);
+        }
+
+        function sendToWhatsapp() {
+            const name = document.getElementById('customer-name').value;
+            const address = document.getElementById('customer-address').value;
+            const quantity = document.getElementById('order-quantity').value;
+
+            // Get selected size from radio buttons
+            const sizeElement = document.querySelector('input[name="product-size"]:checked');
+            const size = sizeElement ? sizeElement.value : '20ML';
+
+            if (!name || !address || !quantity) {
+                alert("Mohon lengkapi data pemesanan.");
+                return;
+            }
+
+            const phoneNumber = "6281234567890";
+
+            const message = `Halo Admin Wazhima, saya ingin memesan:
+            
+📦 *Produk:* ${currentProduct}
+📏 *Ukuran:* ${size}
+🔢 *Jumlah:* ${quantity} pcs
+
+👤 *Nama:* ${name}
+📍 *Alamat:* ${address}
+
+Mohon info total harga dan ongkos kirimnya. Terima kasih.`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+            window.open(whatsappUrl, '_blank');
+            closeModal();
+        }
+
+        // --- PRODUCT DETAIL LOGIC ---
+        const detailModal = document.getElementById('product-detail-modal');
+        const detailModalPanel = detailModal.querySelector('.inline-block');
+        let currentDetailKey = '';
+
+        function openProductDetail(key) {
+            const product = products[key];
+            if (!product) return;
+
+            currentDetailKey = key; // Store key for "Pesan Sekarang" button inside detail modal
+
+            // Populate Data
+            document.getElementById('detail-image').src = product.image;
+            document.getElementById('detail-name').innerText = product.name;
+            document.getElementById('detail-price').innerText = product.price;
+            document.getElementById('detail-description').innerText = product.description;
+            document.getElementById('detail-size').innerText = product.size;
+
+            // Populate Benefits List
+            const benefitsList = document.getElementById('detail-benefits');
+            benefitsList.innerHTML = ''; // Clear previous
+            product.benefits.forEach(benefit => {
+                const li = document.createElement('li');
+                li.className = 'flex items-start gap-2';
+                li.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4 text-herbal-500 mt-0.5 flex-shrink-0"></i> <span>${benefit}</span>`;
+                benefitsList.appendChild(li);
+            });
+            lucide.createIcons(); // Refresh icons for new list items
+
+            // Show Modal
+            detailModal.classList.remove('hidden');
+            setTimeout(() => {
+                detailModalPanel.classList.remove('modal-enter');
+                detailModalPanel.classList.add('modal-enter-active');
+            }, 10);
+        }
+
+        function closeProductDetail() {
+            detailModalPanel.classList.remove('modal-enter-active');
+            detailModalPanel.classList.add('modal-exit-active');
+
+            setTimeout(() => {
+                detailModal.classList.add('hidden');
+                detailModalPanel.classList.remove('modal-exit-active');
+                detailModalPanel.classList.add('modal-enter');
+            }, 200);
+        }
+
+        function orderFromDetail() {
+            if (currentDetailKey && products[currentDetailKey]) {
+                openOrderModal(products[currentDetailKey].name);
+            }
+        }
+
+        // Reseller Logic
+        function joinReseller() {
+            const phoneNumber = "6281234567890";
+            const message = "Halo Admin Wazhima, saya tertarik untuk mendaftar menjadi Reseller. Mohon info syarat dan ketentuannya.";
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // FAQ Toggle Logic
+        function toggleFaq(button) {
+            const content = button.nextElementSibling;
+            // Lucide replaces <i> with <svg>, so we try to select svg first
+            const icon = button.querySelector('svg') || button.querySelector('i');
+
+            content.classList.toggle('hidden');
+
+            if (icon) {
+                if (content.classList.contains('hidden')) {
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            }
+        }
+
+        // Custom Toast Notification (Keep for other uses if needed)
+        function showToast(message, isProduct = true) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'pointer-events-auto bg-herbal-800 text-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-3 toast-enter min-w-[300px] border-l-4 border-herbal-400 backdrop-blur-md bg-opacity-95';
+
+            let content = `
+                <div class="bg-herbal-600 rounded-full p-1"><i data-lucide="check" class="w-4 h-4 text-white"></i></div>
+                <div>
+                    <h5 class="font-bold text-sm">Notifikasi</h5>
+                    <p class="text-xs text-herbal-200">${message}</p>
+                </div>
+            `;
+
+            toast.innerHTML = content;
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            setTimeout(() => {
+                toast.classList.remove('toast-enter');
+                toast.classList.add('toast-exit');
+                setTimeout(() => {
+                    toast.remove();
+                }, 500);
+            }, 3000);
+        }
+    </script>
+</body>
+
+</html>
